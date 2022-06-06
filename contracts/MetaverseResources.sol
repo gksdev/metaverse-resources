@@ -23,4 +23,16 @@ contract MetaverseResources is Ownable, KIP37, KIP37Mintable, KIP37Burnable, KIP
         _uris[id] = uri;
         emit URI(uri, id);
     }
+
+    function _beforeTokenTransfer(
+        address operator,
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) internal {
+        require(!blacklist[operator] && !blacklist[from] && !blacklist[to], "BLACKLIST");
+        super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
+    }
 }
